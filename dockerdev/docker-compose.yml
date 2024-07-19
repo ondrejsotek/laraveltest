@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  
+  laraveltest:
+    build: .
+    restart: no
+    ports:
+      - 80:80
+    environment:
+      - DEBUG_MODE=1
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - ../:/var/www/html/
+
+# docker exec <dockerid> composer install --working-dir=/var/www/html
+# docker exec <dockerid> npm install --prefix /var/www/html
