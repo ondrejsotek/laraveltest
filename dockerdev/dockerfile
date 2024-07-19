@@ -56,11 +56,11 @@ RUN mkdir -p /run/apache2 \
  && sed -i "s/#LoadModule\ session_cookie_module/LoadModule\ session_cookie_module/" /etc/apache2/httpd.conf \
  && sed -i "s/#LoadModule\ session_crypto_module/LoadModule\ session_crypto_module/" /etc/apache2/httpd.conf \
  && sed -i "s/#LoadModule\ deflate_module/LoadModule\ deflate_module/" /etc/apache2/httpd.conf \
- && sed -i "s#^DocumentRoot \".*#DocumentRoot \"/var/www/html/public\"#g" /etc/apache2/httpd.conf \
- && sed -i "s#/var/www/localhost/public#/var/www/html/public#" /etc/apache2/httpd.conf \
- && printf "\n<Directory \"/var/www/html/public\">\n\tAllowOverride All\n</Directory>\n" >> /etc/apache2/httpd.conf
+ && sed -i "s#^DocumentRoot \".*#DocumentRoot \"/var/www/html/htdocs\"#g" /etc/apache2/httpd.conf \
+ && sed -i "s#/var/www/localhost/htdocs#/var/www/html/htdocs#" /etc/apache2/httpd.conf \
+ && printf "\n<Directory \"/var/www/html/htdocs\">\n\tAllowOverride All\n</Directory>\n" >> /etc/apache2/httpd.conf
 
-RUN mkdir -p /var/www/html/public \
+RUN mkdir -p /var/www/html/htdocs \
  && chown -R apache:apache /var/www/html \
  && chmod -R 755 /var/www/html
  
@@ -79,6 +79,10 @@ EXPOSE 80
 
 RUN rm -f /run/apache2/apache2.pid
 RUN rm -f /run/apache2/httpd.pid
+
+# Nette Tester symlink
+RUN ln -s ../app/AdminModule AdminModule
+RUN ln -s ../app/components components
 
 # Symlink php to php82
 RUN ln -s /usr/bin/php82 /usr/bin/php
